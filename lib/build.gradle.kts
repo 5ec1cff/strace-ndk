@@ -23,6 +23,7 @@ android {
         externalNativeBuild.cmake {
             arguments += "-DANDROID_STL=c++_static"
             cppFlags += arrayOf("-std=c++20", "-fno-exceptions", "-fno-rtti")
+            abiFilters("arm64-v8a", "armeabi-v7a", "x86", "x86_64", "riscv64")
         }
     }
 

@@ -276,6 +276,9 @@ elseif (${CMAKE_ANDROID_ARCH} STREQUAL "x86")
 elseif (${CMAKE_ANDROID_ARCH} STREQUAL "x86_64")
     set(ARCH "x86_64")
     set(DEFINITIONS ${DEFINITIONS} ${DEFINITIONS_64} -DX86_64=1)
+elseif (${CMAKE_ANDROID_ARCH} STREQUAL "riscv64")
+    set(ARCH "riscv")
+    set(DEFINITIONS ${DEFINITIONS} ${DEFINITIONS_64} -DRISCV=1)
 endif()
 
 target_compile_definitions(strace PRIVATE ${DEFINITIONS})
@@ -298,4 +301,3 @@ if (DEFINED DEBUG_SYMBOLS_PATH)
 endif()
 
 add_subdirectory(libunwindstack)
-
