@@ -1,3 +1,6 @@
 [submodule "lib/src/main/strace"]
 	path = lib/src/main/strace
 	url = https://android.googlesource.com/platform/external/strace
+[submodule "lib/src/main/libunwindstack"]
+	path = lib/src/main/libunwindstack
+	url = https://github.com/cinit/libunwindstack

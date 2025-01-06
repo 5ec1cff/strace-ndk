@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.4)
 project(strace-ndk)
 
+#find_package(cxx REQUIRED CONFIG)
+#link_libraries(cxx::cxx)
+
 set(STRACE_SRC strace)
 add_executable(strace
         ${STRACE_SRC}/access.c
@@ -224,9 +227,13 @@ add_executable(strace
         ${STRACE_SRC}/xattr.c
         ${STRACE_SRC}/xlat.c
         ${STRACE_SRC}/xmalloc.c
+
+        ${STRACE_SRC}/unwind.c
+        bridge.c
+        bridgexx.cpp
 )
 
-set(DEFINITIONS -DHAVE_CONFIG_H -DSIZEOF_KERNEL_LONG_T=SIZEOF_LONG -DSIZEOF_OFF_T=SIZEOF_LONG)
+set(DEFINITIONS -DHAVE_CONFIG_H -DSIZEOF_KERNEL_LONG_T=SIZEOF_LONG -DSIZEOF_OFF_T=SIZEOF_LONG -DENABLE_STACKTRACE -DUSE_UNWINDER=\"libunwindstack\")
 
 target_compile_options(strace PRIVATE
         -Wall
@@ -274,3 +281,8 @@ target_compile_definitions(strace PRIVATE ${DEFINITIONS})
 target_include_directories(strace PRIVATE
         ${STRACE_SRC}/linux/${ARCH} ${HEADERS}
 )
+
+target_link_libraries(strace PRIVATE unwindstack log)
+
+add_subdirectory(libunwindstack)
+
