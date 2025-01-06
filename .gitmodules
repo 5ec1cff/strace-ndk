@@ -1,0 +1,3 @@
+[submodule "lib/src/main/strace"]
+	path = lib/src/main/strace
+	url = https://android.googlesource.com/platform/external/strace
