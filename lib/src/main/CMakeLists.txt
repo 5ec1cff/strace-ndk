@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.4)
 project(strace-ndk)
 
-#find_package(cxx REQUIRED CONFIG)
-#link_libraries(cxx::cxx)
-
 set(CMAKE_SHARED_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS} -Wl,--exclude-libs,ALL -Wl,--gc-sections)
+if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(-Oz -flto)
+endif()
 
 set(STRACE_SRC strace)
 add_executable(strace
@@ -285,6 +285,17 @@ target_include_directories(strace PRIVATE
 )
 
 target_link_libraries(strace PRIVATE unwindstack log)
+
+if (DEFINED DEBUG_SYMBOLS_PATH)
+    add_compile_options(-Oz -flto)
+    add_custom_command(TARGET strace POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${DEBUG_SYMBOLS_PATH}/${ANDROID_ABI}
+            COMMAND ${CMAKE_OBJCOPY} --only-keep-debug $<TARGET_FILE:strace>
+            ${DEBUG_SYMBOLS_PATH}/${ANDROID_ABI}/strace.debug
+            COMMAND ${CMAKE_STRIP} --strip-all $<TARGET_FILE:strace>
+            COMMAND ${CMAKE_OBJCOPY} --add-gnu-debuglink ${DEBUG_SYMBOLS_PATH}/${ANDROID_ABI}/strace.debug
+            $<TARGET_FILE:strace>)
+endif()
 
 add_subdirectory(libunwindstack)
 

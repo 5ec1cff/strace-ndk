@@ -29,7 +29,7 @@ android {
     buildTypes {
         release {
             externalNativeBuild.cmake {
-                cppFlags += arrayOf("-Oz", "-flto")
+                arguments += "-DDEBUG_SYMBOLS_PATH=${layout.buildDirectory.dir("symbols").get().asFile.absolutePath}"
             }
         }
     }
@@ -37,9 +37,4 @@ android {
     prefab {
         register("strace")
     }
-}
-
-dependencies {
-    // TODO: fix prefab-cxx has no cxxabi.h
-    // implementation(libs.cxx)
 }
