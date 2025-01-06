@@ -4,6 +4,8 @@ project(strace-ndk)
 #find_package(cxx REQUIRED CONFIG)
 #link_libraries(cxx::cxx)
 
+set(CMAKE_SHARED_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS} -Wl,--exclude-libs,ALL -Wl,--gc-sections)
+
 set(STRACE_SRC strace)
 add_executable(strace
         ${STRACE_SRC}/access.c

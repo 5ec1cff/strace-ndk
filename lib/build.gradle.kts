@@ -26,6 +26,14 @@ android {
         }
     }
 
+    buildTypes {
+        release {
+            externalNativeBuild.cmake {
+                cppFlags += arrayOf("-Oz", "-flto")
+            }
+        }
+    }
+
     prefab {
         register("strace")
     }
